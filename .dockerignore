@@ -1,0 +1,13 @@
+# Reuse .gitignore patterns + extra
+.git
+.github
+wiki
+docs
+openapi
+*.md
+Dockerfile
+*.log
+coverage*
+*.out
+dist
+bin
