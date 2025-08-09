@@ -4,7 +4,7 @@
 ![CodeQL](https://github.com/rumendamyanov/go-sixtysix/actions/workflows/github-code-scanning/codeql/badge.svg)
 ![Dependabot](https://github.com/rumendamyanov/go-sixtysix/actions/workflows/dependabot/dependabot-updates/badge.svg)
 [![codecov](https://codecov.io/gh/rumendamyanov/go-sixtysix/branch/master/graph/badge.svg)](https://codecov.io/gh/rumendamyanov/go-sixtysix)
-[![Go Report Card](https://goreportcard.com/badge/go.rumenx.com/sixtysix?)](https://goreportcard.com/report/go.rumenx.com/sixtysix)
+[![Go Report](https://goreportcard.com/badge/go.rumenx.com/sixtysix?2)](https://goreportcard.com/report/go.rumenx.com/sixtysix)
 [![Go Reference](https://pkg.go.dev/badge/go.rumenx.com/sixtysix.svg)](https://pkg.go.dev/go.rumenx.com/sixtysix)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
