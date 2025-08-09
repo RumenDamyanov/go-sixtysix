@@ -1,3 +1,18 @@
+# Binaries
+/bin/
+/dist/
+
+# Build artifacts
+*.out
+*.test
+coverage/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
@@ -28,5 +43,12 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
-# .vscode/
+.vscode/
+
+# Misc
+wiki/
+
+# Logs & temp
+*.log
+tmp/
+/.tmp/

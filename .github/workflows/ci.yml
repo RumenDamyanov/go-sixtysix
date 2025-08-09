@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Verify build
+        run: go build ./...
+
+      - name: Run tests with coverage
+        run: go test ./... -coverprofile=coverage.out -covermode=atomic
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # repo secret
+          files: coverage.out
+          flags: unittests
+          fail_ci_if_error: true
+          verbose: false
+
+      - name: Go vet
+        run: go vet ./...
+
+      - name: Static analysis (ineffassign)
+        run: |
+          go install github.com/gordonklaus/ineffassign@latest
+          ineffassign ./...
+        continue-on-error: true
