@@ -41,7 +41,13 @@ Rules reference: [Wikipedia – Sixty-six](https://en.wikipedia.org/wiki/Sixty-s
 
 Requires Go 1.22+.
 
-Fetch the module:
+You must run `go get` inside your own module (a directory containing a `go.mod`). If you don't have one yet, create it first:
+
+```bash
+go mod init myapp
+```
+
+Then fetch the library module (root package now provides the game plus subpackages `engine`, `store`):
 
 ```bash
 go get go.rumenx.com/sixtysix@latest
@@ -50,15 +56,15 @@ go get go.rumenx.com/sixtysix@latest
 Or pin a version (example):
 
 ```bash
-go get go.rumenx.com/sixtysix@v0.1.0
+go get go.rumenx.com/sixtysix@v1.0.1
 ```
 
 Typical imports:
 
 ```go
 import (
+  "go.rumenx.com/sixtysix"
   "go.rumenx.com/sixtysix/engine"
-  "go.rumenx.com/sixtysix/sixtysix"
   "go.rumenx.com/sixtysix/store"
 )
 
@@ -196,7 +202,7 @@ See [docs/integration.md](docs/integration.md) for architecture suggestions.
 ## Project Layout
 
 ```text
-sixtysix/      # Game rules implementation
+sixtysix.go    # Game rules implementation (root package)
 engine/        # Core engine + session orchestration
 store/         # In-memory store (interface for alt backends)
 api/           # HTTP server wiring

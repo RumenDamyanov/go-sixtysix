@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"go.rumenx.com/sixtysix"
 	"go.rumenx.com/sixtysix/engine"
-	"go.rumenx.com/sixtysix/sixtysix"
 	"go.rumenx.com/sixtysix/store"
 )
 

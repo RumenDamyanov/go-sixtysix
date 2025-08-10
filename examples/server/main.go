@@ -7,9 +7,9 @@ import (
 	"os"
 	"time"
 
+	"go.rumenx.com/sixtysix"
 	"go.rumenx.com/sixtysix/api"
 	"go.rumenx.com/sixtysix/engine"
-	"go.rumenx.com/sixtysix/sixtysix"
 	"go.rumenx.com/sixtysix/store"
 )
 

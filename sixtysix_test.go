@@ -6,6 +6,10 @@ import (
 	"go.rumenx.com/sixtysix/engine"
 )
 
+func actionPlay(card int) engine.Action {
+	return engine.Action{Type: ActionPlay, Payload: map[string]any{"card": card}}
+}
+
 func TestInitialDealDeterministic(t *testing.T) {
 	g := Game{}
 	a := g.InitialState(42).(State)
@@ -13,10 +17,11 @@ func TestInitialDealDeterministic(t *testing.T) {
 	if a.TrumpSuit != b.TrumpSuit || a.TrumpCard != b.TrumpCard {
 		t.Fatalf("expected deterministic trump")
 	}
-	if len(a.Hands[0]) != 6 || len(a.Hands[1]) != 6 || len(a.Stock) != 24-1-12 {
+	if len(a.Hands[0]) != 6 || len(a.Hands[1]) != 6 || len(a.Stock) != 24-1-12 { // deck minus trump and initial hands
 		t.Fatalf("unexpected deal sizes: %+v", a)
 	}
 }
+
 func TestPlayAndTrickResolution(t *testing.T) {
 	g := Game{}
 	st := g.InitialState(1).(State)
@@ -42,6 +47,7 @@ func TestPlayAndTrickResolution(t *testing.T) {
 		t.Fatalf("trick should be resolved")
 	}
 }
+
 func TestCloseStockEnforcesFollowSuit(t *testing.T) {
 	g := Game{}
 	st := g.InitialState(7).(State)
@@ -51,19 +57,20 @@ func TestCloseStockEnforcesFollowSuit(t *testing.T) {
 	st = ns.(State)
 	follower := 1 - st.Current
 	ls := cardSuit(lead)
-	var bad int
+	var off int
 	for _, c := range st.Hands[follower] {
 		if cardSuit(c) != ls {
-			bad = c
+			off = c
 			break
 		}
 	}
-	if bad != 0 {
-		if err := g.Validate(st, actionPlay(bad)); err == nil {
-			t.Fatalf("expected must follow suit")
+	if off != 0 { // has off-suit card but must follow if possible
+		if err := g.Validate(st, actionPlay(off)); err == nil {
+			t.Fatalf("expected follow-suit requirement when closed")
 		}
 	}
 }
+
 func TestDeclareMarriageAndExchange(t *testing.T) {
 	g := Game{}
 	st := g.InitialState(99).(State)
@@ -75,10 +82,11 @@ func TestDeclareMarriageAndExchange(t *testing.T) {
 		ns, _ := g.Apply(st, engine.Action{Type: ActionExchange})
 		st = ns.(State)
 		if cardSuit(st.TrumpCard) != st.TrumpSuit || cardVal(st.TrumpCard) != 0 {
-			t.Fatalf("expected trump card to be 9 of trump after exchange")
+			t.Fatalf("expected 9 of trump after exchange")
 		}
 	}
 }
+
 func TestLastTrickBonus(t *testing.T) {
 	g := Game{}
 	st := State{Current: 0, Scores: [2]int{0, 0}, Hands: [2][]int{{card(Hearts, 0)}, {card(Hearts, 11)}}, Stock: nil, Closed: true, TrumpSuit: Spades, TrumpCard: card(Spades, 0), Winner: -1}
@@ -96,9 +104,6 @@ func TestLastTrickBonus(t *testing.T) {
 		t.Fatalf("expected empty hands at end")
 	}
 	if st.Scores[1] < 21 {
-		t.Fatalf("expected last trick bonus applied, got scores=%v", st.Scores)
+		t.Fatalf("expected last trick bonus applied, scores=%v", st.Scores)
 	}
-}
-func actionPlay(card int) engine.Action {
-	return engine.Action{Type: ActionPlay, Payload: map[string]any{"card": card}}
 }
